@@ -1,8 +1,17 @@
 {
-    "servers":
+    "general":
+    {
+        "script_dir": "scripts/"
+    },
+    "check":
     [
         {
-            "name": "mysql_cluster"
+            "name": "mysql_server",
+            "script": "check_mysql.sh"
+        },
+        {
+            "name": "nginx_server",
+            "script": "check_nginx.sh"
         }
     ]
 }
