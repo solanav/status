@@ -1,0 +1,8 @@
+{
+    "servers":
+    [
+        {
+            "name": "mysql_cluster"
+        }
+    ]
+}
