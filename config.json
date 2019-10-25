@@ -7,11 +7,13 @@
     [
         {
             "name": "mysql_server",
-            "script": "check_mysql.sh"
+            "script": "check_mysql.sh",
+            "timer": "3"
         },
         {
             "name": "nginx_server",
-            "script": "check_nginx.sh"
+            "script": "check_nginx.sh",
+            "timer": "5"
         }
     ]
 }
