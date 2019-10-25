@@ -32,16 +32,15 @@ class Check():
         self.config = config
         self.scripts = []
         self.threads = []
+        self.state = {}
 
     def run_script(self, script_dict):
-        print('Running {}...'.format(script_dict['name']), end=' ')
-
         try:
             ret = run([self.config.script_dir + script_dict['script']])
             if ret.returncode == 0:
-                print('[OK]')
+                self.state[script_dict['name']] = 'OK'
             else:
-                print('[ERROR]')
+                self.state[script_dict['name']] = 'ERROR'
         except PermissionError as e:
             raise e
 
@@ -82,17 +81,15 @@ class Signals():
     def setup(self):
         signal.signal(signal.SIGINT, self.sigint)
 
-def main():
-    config = Config("config.json")
-    check = Check(config)
-    signal = Signals(check)
-    
-    # Start signal handlers
-    signal.setup()
+"""
+config = Config("config.json")
+check = Check(config)
+signal = Signals(check)
 
-    # Add scripts and run
-    check.add_all()
-    check.run()
+# Start signal handlers
+signal.setup()
 
-if __name__ == '__main__':
-    main()
+# Add scripts and run
+check.add_all()
+check.run()
+"""
