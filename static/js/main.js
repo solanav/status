@@ -10,9 +10,9 @@ $(document).ready(function() {
             state.style.color = 'green';
         }
     });
+    
+    (function(){
+        socket.emit('reload');
+        setTimeout(arguments.callee, 1000);
+    })();
 });
-
-(function(){
-    socket.emit('reload');
-    setTimeout(arguments.callee, 1000);
-})();
