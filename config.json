@@ -6,14 +6,24 @@
     "check":
     [
         {
-            "name": "mysql_server",
+            "name": "MySQL server",
             "script": "check_mysql.sh",
             "timer": "3"
         },
         {
-            "name": "nginx_server",
+            "name": "NGINX load balancer",
             "script": "check_nginx.sh",
             "timer": "5"
+        },
+        {
+            "name": "OpenSSH server",
+            "script": "check_ssh.sh",
+            "timer": "2"
+        },
+        {
+            "name": "Apache web server",
+            "script": "check_apache.sh",
+            "timer": "1"
         }
     ]
 }

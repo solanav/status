@@ -21,9 +21,7 @@ class Config():
         self.script_dir = self.data['general']['script_dir']
 
     def get_scripts(self):
-        if self.script_list == None:
-            self.script_list  = self.data['check']
-
+        self.script_list  = self.data['check']
         return self.script_list
 
 
@@ -70,26 +68,3 @@ class Check():
     def stop(self):
         for thread in self.threads:
             thread.cancel()
-
-class Signals():
-    def __init__(self, config):
-        self.config = config
-    
-    def sigint(self, sig, frame):
-        self.config.stop()
-
-    def setup(self):
-        signal.signal(signal.SIGINT, self.sigint)
-
-"""
-config = Config("config.json")
-check = Check(config)
-signal = Signals(check)
-
-# Start signal handlers
-signal.setup()
-
-# Add scripts and run
-check.add_all()
-check.run()
-"""

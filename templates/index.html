@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Status</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
     <style>
     table {
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        table-layout:fixed;
     }
     
     td, th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        overflow: hidden;
     }
     
     tr:nth-child(even) {
@@ -34,12 +38,28 @@
             <tr>
                 <td>{{ s.name }}</td>
                 <td>{{ s.timer }}</td>
-                <td id='{{ s.name }}'>Unknown</td>
+                <td id='{{ s.name }}'>{{ s.status }}</td>
             </tr>
         {% endfor %}
     </table>
-    <form action="{{ url_for('handle_data') }}" method="post">
-        <input type="submit">
-    </form>
 </body>
+
+<script>
+    var socket = io.connect('http://' + document.domain + ':' + location.port + '/');
+
+    socket.on('update_status', function(data) {
+        state = document.getElementById(data.name);
+        state.innerHTML = data.status;
+        if (data.status == 'ERROR') {
+            state.style.color = 'red';
+        } else {
+            state.style.color = 'green';
+        }
+    });
+    (function(){
+        socket.emit('reload');
+        setTimeout(arguments.callee, 1000);
+    })();
+</script>
+
 </html>
