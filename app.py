@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template
 from controller import Config, Check
 from flask_socketio import SocketIO, emit
 from threading import Timer
