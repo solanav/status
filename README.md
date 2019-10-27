@@ -4,15 +4,22 @@ Status is a tool written in python that allows you to monitor your servers and s
 # Why Status?
 This is a very light and easy to use tool that does not require installation in any of the services you are monitoring.
 
+# Download and Installation
+Follow these steps:
+1. `git clone https://github.com/solanav/status`
+2. `cd status`
+3. `pip3 install -r requirements.txt`
+4. `python3 app.py`
+
 # Config
 The configuration file is a json file that contains two sections:
 
-## General
+### General
 |Option|Explanation|Required|Example|
 |---|---|--|---|
 |script_dir|Directory where the scripts are|Yes|/home/user/scripts|
 
-## Check
+### Check
 Contains a list of json objects which describe a service checker with these options:
 
 |Option|Explanation|Required|Example|
