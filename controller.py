@@ -36,9 +36,14 @@ class Check():
         try:
             ret = run([self.config.script_dir + script_dict['script']])
             if ret.returncode == 0:
-                self.state[script_dict['name']] = 'OK'
+                self.state[script_dict['name']] = 'UP'
+            elif ret.returncode == 1:
+                self.state[script_dict['name']] = 'DOWN'
+            elif ret.returncode == 1:
+                self.state[script_dict['name']] = 'WARNING'
             else:
-                self.state[script_dict['name']] = 'ERROR'
+                self.state[script_dict['name']] = 'UNKNOWN'
+
         except PermissionError as e:
             raise e
 

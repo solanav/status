@@ -8,22 +8,37 @@
         {
             "name": "MySQL server",
             "script": "check_mysql.sh",
-            "timer": "3"
+            "timer": "32"
         },
         {
             "name": "NGINX load balancer",
             "script": "check_nginx.sh",
-            "timer": "5"
+            "timer": "3"
         },
         {
             "name": "OpenSSH server",
             "script": "check_ssh.sh",
-            "timer": "2"
+            "timer": "26"
         },
         {
             "name": "Apache web server",
             "script": "check_apache.sh",
-            "timer": "1"
+            "timer": "15"
+        },
+        {
+            "name": "Minecraft server",
+            "script": "check_mysql.sh",
+            "timer": "52"
+        },
+        {
+            "name": "WoW private server",
+            "script": "check_nginx.sh",
+            "timer": "100"
+        },
+        {
+            "name": "Streaming service",
+            "script": "check_ssh.sh",
+            "timer": "80"
         }
     ]
 }

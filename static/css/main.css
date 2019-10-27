@@ -1,3 +1,8 @@
+.container {
+    padding: 0;
+    margin: 1em;
+}
+
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -14,4 +19,24 @@ td, th {
 
 tr:nth-child(even) {
     background-color: #dddddd;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.list {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+hr {
+    margin-top: 0;
+    border-top-color: black;
+}
+
+.container-fluid {
+    padding: 2em;
 }
