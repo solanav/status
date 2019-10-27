@@ -1,5 +1,8 @@
 # What is Status?
-Status is a tool written in python that allows you to monitor your servers and services with custom bash scripts. A web interface is in progress.
+Status is a tool written in python that allows you to monitor your servers and services with custom bash scripts and other executables.
+
+# Why Status?
+This is a very light and easy to use tool that does not require installation in any of the services you are monitoring.
 
 # Config
 The configuration file is a json file that contains two sections:
