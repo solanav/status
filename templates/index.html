@@ -19,104 +19,113 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-4">
-                <h4>Monitored services</h4>
-                <hr>
-                <ul>
-                    {% for s in scripts %}
-                    <li>
-                        <div class="list">
-                            {% if s.status == "UP" %}
+                <div class="border-box">
+                    <h4>Monitored services</h4>
+                    <hr>
+                    <ul>
+                        {% for s in scripts %}
+                        <li>
+                            <div class="list">
+                                {% if s.status == "UP" %}
                                 <img id='{{ s.name }}' src="{{ url_for('static',filename='images/up.svg') }}"></img>
-                            {% elif s.status == "DOWN" %}
+                                {% elif s.status == "DOWN" %}
                                 <img id='{{ s.name }}' src="{{ url_for('static',filename='images/down.svg') }}"></img>
-                            {% elif s.status == "WARNING" %}
-                                <img id='{{ s.name }}' src="{{ url_for('static',filename='images/warning.svg') }}"></img>
-                            {% else %}
-                                <img id='{{ s.name }}' src="{{ url_for('static',filename='images/warning.svg') }}"></img>
-                            {% endif %}
-                            &nbsp{{ s.name }}
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
+                                {% elif s.status == "WARNING" %}
+                                <img id='{{ s.name }}'
+                                    src="{{ url_for('static',filename='images/warning.svg') }}"></img>
+                                {% else %}
+                                <img id='{{ s.name }}'
+                                    src="{{ url_for('static',filename='images/warning.svg') }}"></img>
+                                {% endif %}
+                                &nbsp{{ s.name }}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
             <div class="col-sm-8">
-                <canvas id="myChart" width="80%" height="100"></canvas>
+                <div class="border-box">
+                    <canvas id="myChart" style="width: 100%;"></canvas>
+                </div>
+                <div class="border-box">
+                    <h4>News and events</h4>
+                </div>
             </div>
         </div>
     </div>
 </body>
 <script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: [
-            'Up',
-            'Down',
-            'Warning',
-            'Unknown'
-        ],
-        datasets: [{
-            label: '# of Services',
-            data: [
-                {{ stats.up }},
-                {{ stats.down }},
-                {{ stats.warning }},
-                {{ stats.unknown }}
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                'Up',
+                'Down',
+                'Warning',
+                'Unknown'
             ],
-            backgroundColor: [
-                'rgba(255, 0, 69, 1)', // Red
-                'rgba(75, 255, 127, 1)', // Green
-                'rgba(255, 159, 64, 1)', // Warning
-                'rgba(120, 120, 120, 1)', // Unknown
-            ],
-            borderWidth: 2
-        }]
-    }
-});
-
-$(document).ready(function() {
-    var socket = io.connect('http://' + document.domain + ':' + location.port + '/');
-
-    socket.on('update_status', function(d) {
-        state = document.getElementById(d.name);
-        state.innerHTML = d.status;
-        if (d.status == 'DOWN') {
-            state.src = '/static/images/up.svg';
-        } 
-        else if (d.status == 'UP') {
-            state.src = '/static/images/down.svg';
+            datasets: [{
+                label: '# of Services',
+                data: [
+                    {{ stats.up }},
+                    {{ stats.down }},
+                    {{ stats.warning }},
+                    {{ stats.unknown }}
+                ],
+                backgroundColor: [
+                    'rgba(255, 0, 69, 1)', // Red
+                    'rgba(75, 255, 127, 1)', // Green
+                    'rgba(255, 159, 64, 1)', // Warning
+                    'rgba(120, 120, 120, 1)', // Unknown
+                ],
+                borderWidth: 2
+            }]
         }
-        else if (d.status == 'UP') {
-            state.src = '/static/images/warning.svg';
-        }
-        else {
-            state.src = '/static/images/unknown.svg';
-        }
-
-        // Check if values have changed and update them
-        if (myChart.data.datasets[0].data[0] != d.stats.up) {
-            myChart.data.datasets[0].data[0] = d.stats.up
-        }
-        else if (myChart.data.datasets[0].data[1] != d.stats.down) {
-            myChart.data.datasets[0].data[1] = d.stats.down
-        }
-        else if (myChart.data.datasets[0].data[2] != d.stats.warning) {
-            myChart.data.datasets[0].data[2] = d.stats.warning
-        }
-        else if (myChart.data.datasets[0].data[3] != d.stats.unknown) {
-            myChart.data.datasets[0].data[3] = d.stats.unknown
-        }
-
-        myChart.update();
     });
 
-    (function(){
-        socket.emit('reload');
-        setTimeout(arguments.callee, 1000);
-    })();
-});
+    $(document).ready(function () {
+        var socket = io.connect('http://' + document.domain + ':' + location.port + '/');
+
+        socket.on('update_status', function (d) {
+            state = document.getElementById(d.name);
+            state.innerHTML = d.status;
+            if (d.status == 'DOWN') {
+                state.src = '/static/images/up.svg';
+            }
+            else if (d.status == 'UP') {
+                state.src = '/static/images/down.svg';
+            }
+            else if (d.status == 'UP') {
+                state.src = '/static/images/warning.svg';
+            }
+            else {
+                state.src = '/static/images/unknown.svg';
+            }
+
+            // Check if values have changed and update them
+            if (myChart.data.datasets[0].data[0] != d.stats.up) {
+                myChart.data.datasets[0].data[0] = d.stats.up
+            }
+            else if (myChart.data.datasets[0].data[1] != d.stats.down) {
+                myChart.data.datasets[0].data[1] = d.stats.down
+            }
+            else if (myChart.data.datasets[0].data[2] != d.stats.warning) {
+                myChart.data.datasets[0].data[2] = d.stats.warning
+            }
+            else if (myChart.data.datasets[0].data[3] != d.stats.unknown) {
+                myChart.data.datasets[0].data[3] = d.stats.unknown
+            }
+
+            myChart.update();
+        });
+
+        (function () {
+            socket.emit('reload');
+            setTimeout(arguments.callee, 1000);
+        })();
+    });
 
 </script>
 

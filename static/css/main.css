@@ -38,5 +38,18 @@ hr {
 }
 
 .container-fluid {
-    padding: 2em;
+    padding: 1em;
+}
+
+.border-box {
+    border: 2px grey solid;
+    padding: 1em;
+    margin-bottom: 1em;
+    height: auto;
+    background-color: #2e2e2e;
+    color: white;
+}
+
+body {
+    background-color: black;
 }
