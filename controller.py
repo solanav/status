@@ -3,6 +3,11 @@ from subprocess import run
 import threading
 import signal
 
+# States of the scripts
+UP = 'up'
+DOWN = 'down'
+WARNING = 'warning'
+UNKNOWN = 'unknown'
 
 class Config():
     def __init__(self, file_name):
@@ -32,17 +37,47 @@ class Check():
         self.threads = []
         self.state = {}
 
+    def get_all_info(self):
+        scripts = self.config.get_scripts()
+
+        # Script list with updated status attatched
+        status_script_list = []
+
+        # Stats counting each 
+        stats = {}
+        stats[UP] = 0
+        stats[DOWN] = 0
+        stats[WARNING] = 0
+        stats[UNKNOWN] = 0
+
+        # Append status of script each time this is reloaded
+        for script in scripts:
+            script['status'] = self.state[script['name']]
+            status_script_list.append(script)
+
+            # Add one to the status counter
+            if script['status'] == UP:
+                stats[UP] += 1
+            elif script['status'] == DOWN:
+                stats[DOWN] += 1
+            elif script['status'] == WARNING:
+                stats[WARNING] += 1
+            else:
+                stats[UNKNOWN] += 1
+
+        return status_script_list, stats
+
     def run_script(self, script_dict):
         try:
             ret = run([self.config.script_dir + script_dict['script']])
             if ret.returncode == 0:
-                self.state[script_dict['name']] = 'UP'
+                self.state[script_dict['name']] = UP
             elif ret.returncode == 1:
-                self.state[script_dict['name']] = 'DOWN'
-            elif ret.returncode == 1:
-                self.state[script_dict['name']] = 'WARNING'
+                self.state[script_dict['name']] = DOWN
+            elif ret.returncode == 2:
+                self.state[script_dict['name']] = WARNING
             else:
-                self.state[script_dict['name']] = 'UNKNOWN'
+                self.state[script_dict['name']] = UNKNOWN
 
         except PermissionError as e:
             raise e
@@ -60,7 +95,7 @@ class Check():
 
         self.scripts.append(lambda: run_script_repeat(script_dict))
 
-        print('Added ' + script_dict['name'])
+        print('[BUILD] Added ' + script_dict['name'])
 
     def add_all(self):
         for script in self.config.get_scripts():
