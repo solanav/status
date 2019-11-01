@@ -36,4 +36,4 @@ The scripts you use to monitor your different services can communicate their sta
 |0|Up, the service is all ok|
 |1|Down, the service is not running|
 |2|Warning|
-|3|Unknown|
+|-|Any other number will show as unknown|
